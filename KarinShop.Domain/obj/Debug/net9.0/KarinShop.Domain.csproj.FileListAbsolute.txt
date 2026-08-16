@@ -1,0 +1,12 @@
+C:\Users\User\source\repos\KarinShop\KarinShop.Domain\bin\Debug\net9.0\KarinShop.Domain.deps.json
+C:\Users\User\source\repos\KarinShop\KarinShop.Domain\bin\Debug\net9.0\KarinShop.Domain.dll
+C:\Users\User\source\repos\KarinShop\KarinShop.Domain\bin\Debug\net9.0\KarinShop.Domain.pdb
+C:\Users\User\source\repos\KarinShop\KarinShop.Domain\obj\Debug\net9.0\KarinShop.Domain.csproj.AssemblyReference.cache
+C:\Users\User\source\repos\KarinShop\KarinShop.Domain\obj\Debug\net9.0\KarinShop.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\User\source\repos\KarinShop\KarinShop.Domain\obj\Debug\net9.0\KarinShop.Domain.AssemblyInfoInputs.cache
+C:\Users\User\source\repos\KarinShop\KarinShop.Domain\obj\Debug\net9.0\KarinShop.Domain.AssemblyInfo.cs
+C:\Users\User\source\repos\KarinShop\KarinShop.Domain\obj\Debug\net9.0\KarinShop.Domain.csproj.CoreCompileInputs.cache
+C:\Users\User\source\repos\KarinShop\KarinShop.Domain\obj\Debug\net9.0\KarinShop.Domain.dll
+C:\Users\User\source\repos\KarinShop\KarinShop.Domain\obj\Debug\net9.0\refint\KarinShop.Domain.dll
+C:\Users\User\source\repos\KarinShop\KarinShop.Domain\obj\Debug\net9.0\KarinShop.Domain.pdb
+C:\Users\User\source\repos\KarinShop\KarinShop.Domain\obj\Debug\net9.0\ref\KarinShop.Domain.dll

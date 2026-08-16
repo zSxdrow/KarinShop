@@ -1,0 +1,189 @@
+﻿@using KarinShop.Application.Services.Products.Queries.GetCategory
+
+@model List<CategoriesDto>
+@{
+    Layout = "_Layout";
+}
+
+<div class="p-6">
+
+    <!-- Header -->
+    <div class="flex items-center justify-between mb-6">
+        <h1 class="text-xl font-DanaMedium text-gray-800 dark:text-gray-100">دسته بندی ها</h1>
+        <a href="@Url.Action("AddNewCategory", "Products")"
+           class="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-xl text-sm font-DanaMedium transition-all">
+            افزودن دسته بندی
+        </a>
+    </div>
+
+    <!-- Card -->
+    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm text-right">
+                <thead>
+                    <tr class="bg-gray-50 dark:bg-gray-700 text-gray-600 dark:text-gray-300">
+                        <th class="px-4 py-3 rounded-r-xl font-DanaMedium">دسته بندی</th>
+                        <th class="px-4 py-3 font-DanaMedium">پدر</th>
+                        <th class="px-4 py-3 text-center font-DanaMedium">افزودن فرزند</th>
+                        <th class="px-4 py-3 font-DanaMedium">مشاهده فرزندان</th>
+                        <th class="px-4 py-3 font-DanaMedium">ویرایش</th>
+                        <th class="px-4 py-3 rounded-l-xl font-DanaMedium">حذف</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100 dark:divide-gray-700">
+                    @foreach (var item in Model)
+                    {
+                        <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-all text-gray-700 dark:text-gray-300">
+                            <td class="px-4 py-3">@item.Name</td>
+                            <td class="px-4 py-3">@(item.parent?.ParentName ?? "-")</td>
+                            <td class="px-4 py-3 text-center">
+                                @if (item.parent == null)
+                                {
+                                    <a href="@Url.Action("AddNewCategory", "Products", new { ParentID = item.ID })"
+                                       class="px-3 py-1.5 bg-green-500 hover:bg-green-600 text-white rounded-lg text-xs font-DanaMedium transition-all">
+                                        افزودن فرزند
+                                    </a>
+                                }
+                            </td>
+                            <td class="px-4 py-3">
+                                @if (item.HasChild)
+                                {
+                                    <a href="@Url.Action("Category", "Products", new { ParentID = item.ID })"
+                                       class="px-3 py-1.5 bg-blue-400 hover:bg-blue-500 text-white rounded-lg text-xs font-DanaMedium transition-all">
+                                        مشاهده
+                                    </a>
+                                }
+                            </td>
+                            <td class="px-4 py-3">
+                                <button onclick="ShowModalEdit('@item.ID', '@item.Name')"
+                                        class="px-3 py-1.5 bg-orange-400 hover:bg-orange-500 text-white rounded-lg text-xs font-DanaMedium transition-all">
+                                    ویرایش
+                                </button>
+                            </td>
+                            <td class="px-4 py-3">
+                                <button onclick="DeleteCategory(@item.ID)"
+                                        class="px-3 py-1.5 bg-red-500 hover:bg-red-600 text-white rounded-lg text-xs font-DanaMedium transition-all">
+                                    حذف
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Modals {
+    <!-- Modal ویرایش دسته بندی -->
+    <div id="editModal" class="fixed inset-0 z-50 hidden items-center justify-center">
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="closeEditModal()"></div>
+        <div class="relative bg-white dark:bg-gray-800 rounded-2xl shadow-xl w-full max-w-md mx-4 z-10">
+
+            <!-- Header -->
+            <div class="flex items-center justify-between p-5 border-b border-gray-200 dark:border-gray-600">
+                <h5 class="text-lg font-DanaMedium text-gray-800 dark:text-gray-100">ویرایش دسته بندی</h5>
+                <button onclick="closeEditModal()"
+                        class="p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-300 transition-all">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="size-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Body -->
+            <div class="p-5 space-y-4">
+                <input type="hidden" id="editId" />
+                <div class="flex flex-col gap-y-2">
+                    <label class="text-sm font-DanaMedium text-gray-700 dark:text-gray-300">نام دسته بندی</label>
+                    <input type="text" id="editName"
+                           class="w-full px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-600
+                                      bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-100
+                                      focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all" />
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="flex items-center justify-end gap-x-3 p-5 border-t border-gray-200 dark:border-gray-600">
+                <button onclick="closeEditModal()"
+                        class="px-4 py-2 rounded-xl border border-gray-200 dark:border-gray-600
+                                   text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all text-sm font-DanaMedium">
+                    انصراف
+                </button>
+                <button onclick="EditCategory()"
+                        class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white transition-all text-sm font-DanaMedium">
+                    تایید
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openEditModal() {
+            const m = document.getElementById('editModal');
+            m.classList.remove('hidden');
+            m.classList.add('flex');
+        }
+
+        function closeEditModal() {
+            const m = document.getElementById('editModal');
+            m.classList.add('hidden');
+            m.classList.remove('flex');
+        }
+
+        function ShowModalEdit(id, name) {
+            document.getElementById('editId').value = id;
+            document.getElementById('editName').value = name;
+            openEditModal();
+        }
+
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape') closeEditModal();
+        });
+    </script>
+}
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function DeleteCategory(id) {
+            Swal.fire({
+                title: 'حذف دسته بندی؟',
+                text: "این عمل قابل بازگشت نیست!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'بله، حذف کن',
+                cancelButtonText: 'انصراف'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.post('@Url.Action("RemoveCategory", "Products")',
+                        { CategoryID: id },
+                        function (data) {
+                            if (data.isSuccess) {
+                                Swal.fire('موفق!', data.message, 'success').then(() => location.reload());
+                            } else {
+                                Swal.fire('خطا!', data.message, 'error');
+                            }
+                        });
+                }
+            });
+        }
+
+        function EditCategory() {
+            var id = $('#editId').val();
+            var name = $('#editName').val();
+
+            $.post('@Url.Action("EditCategory", "Products")',
+                { CategoryID: id, Name: name },
+                function (data) {
+                    if (data.isSuccess) {
+                        Swal.fire('موفق!', data.message, 'success').then(() => location.reload());
+                    } else {
+                        Swal.fire('خطا!', data.message, 'error');
+                    }
+                });
+
+            closeEditModal();
+        }
+    </script>
+}

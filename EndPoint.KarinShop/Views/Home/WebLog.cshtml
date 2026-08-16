@@ -1,0 +1,426 @@
+﻿@{
+    ViewData["Title"] = "WebLog";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مقالات</title>
+    <link rel="preconnect" href="~/https://fonts.googleapis.com">
+    <link href="~/https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0B0D10;
+            --card: #15181C;
+            --ink: #F2F3F4;
+            --ink-soft: #8B9199;
+            --accent: #4F8CFF;
+            --accent-soft: rgba(79,140,255,.12);
+            --line: #24282E;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            direction: rtl !important;
+            unicode-bidi: plaintext !important;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--ink);
+            font-family: 'Vazirmatn', Tahoma, sans-serif;
+            direction: rtl !important;
+            unicode-bidi: plaintext !important;
+            text-align: right !important;
+            line-height: 1.8;
+        }
+
+        .wrap {
+            max-width: 1140px;
+            margin: 0 auto;
+            padding: 48px 24px 90px;
+        }
+
+        .page-head {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 34px;
+        }
+
+            .page-head h1 {
+                font-size: clamp(26px, 3.4vw, 34px);
+                font-weight: 800;
+            }
+
+            .page-head p {
+                color: var(--ink-soft);
+                font-size: 15px;
+                margin-top: 6px;
+            }
+
+        .filters {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .filter {
+            font-size: 13.5px;
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 100px;
+            background: var(--card);
+            border: 1px solid var(--line);
+            color: var(--ink-soft);
+        }
+
+            .filter.active {
+                background: var(--accent);
+                border-color: var(--accent);
+                color: #0B0D10;
+            }
+
+        .featured {
+            display: grid;
+            grid-template-columns: 1.1fr 1fr;
+            gap: 36px;
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            overflow: hidden;
+            margin-bottom: 44px;
+        }
+
+            .featured .media {
+                background: linear-gradient(160deg, #0B0D10, #16233A 55%, #1E3A66);
+                position: relative;
+                min-height: 300px;
+                display: flex;
+                align-items: flex-end;
+                padding: 22px;
+            }
+
+                .featured .media .badge {
+                    background: rgba(255,255,255,.08);
+                    border: 1px solid rgba(255,255,255,.12);
+                    color: #fff;
+                    font-size: 12.5px;
+                    font-weight: 700;
+                    padding: 6px 14px;
+                    border-radius: 100px;
+                }
+
+            .featured .content {
+                padding: 34px 34px 34px 8px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+
+            .featured .cat {
+                font-size: 13px;
+                font-weight: 700;
+                color: var(--accent);
+                margin-bottom: 10px;
+            }
+
+            .featured h2 {
+                font-size: 24px;
+                font-weight: 800;
+                line-height: 1.6;
+                margin-bottom: 12px;
+                color: var(--ink);
+            }
+
+            .featured p {
+                color: var(--ink-soft);
+                font-size: 15px;
+                margin-bottom: 18px;
+            }
+
+            .featured .meta {
+                font-size: 13px;
+                color: var(--ink-soft);
+                display: flex;
+                gap: 10px;
+                align-items: center;
+            }
+
+                .featured .meta .dot {
+                    width: 4px;
+                    height: 4px;
+                    border-radius: 50%;
+                    background: var(--ink-soft);
+                    opacity: .6;
+                }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 26px;
+        }
+
+        .card {
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: border-color .2s ease;
+        }
+
+            .card:hover {
+                border-color: var(--accent);
+            }
+
+            .card .thumb {
+                aspect-ratio: 16/10;
+                background: var(--accent-soft);
+                position: relative;
+                display: flex;
+                align-items: flex-start;
+                padding: 14px;
+            }
+
+                .card .thumb .tag {
+                    font-size: 12px;
+                    font-weight: 700;
+                    color: var(--accent);
+                    background: #0B0D10;
+                    border: 1px solid var(--line);
+                    padding: 5px 12px;
+                    border-radius: 100px;
+                }
+
+            .card .body {
+                padding: 18px 18px 20px;
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .card h3 {
+                font-size: 16.5px;
+                font-weight: 700;
+                line-height: 1.6;
+                margin-bottom: 10px;
+                color: var(--ink);
+            }
+
+            .card p {
+                font-size: 13.5px;
+                color: var(--ink-soft);
+                margin-bottom: 16px;
+                flex: 1;
+            }
+
+            .card .meta {
+                font-size: 12.5px;
+                color: var(--ink-soft);
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                border-top: 1px solid var(--line);
+                padding-top: 12px;
+            }
+
+                .card .meta .dot {
+                    width: 3px;
+                    height: 3px;
+                    border-radius: 50%;
+                    background: var(--ink-soft);
+                    opacity: .6;
+                }
+
+        .thumb.laptop {
+            background: rgba(79,140,255,.10);
+        }
+
+            .thumb.laptop .tag {
+                color: #4F8CFF;
+            }
+
+        .thumb.hardware {
+            background: rgba(255,159,67,.10);
+        }
+
+            .thumb.hardware .tag {
+                color: #FF9F43;
+            }
+
+        .thumb.gaming {
+            background: rgba(158,107,255,.10);
+        }
+
+            .thumb.gaming .tag {
+                color: #9E6BFF;
+            }
+
+        .thumb.review {
+            background: rgba(46,213,140,.10);
+        }
+
+            .thumb.review .tag {
+                color: #2ED58C;
+            }
+
+        @@media (max-width: 900px) {
+            .featured
+
+        {
+            grid-template-columns: 1fr;
+        }
+
+        .grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        }
+        @@media (max-width: 560px) {
+            .grid
+
+        {
+            grid-template-columns: 1fr;
+        }
+
+        .page-head {
+            align-items: flex-start;
+        }
+
+        }
+    </style>
+</head>
+<body>
+
+    <div class="wrap">
+
+        <div class="page-head">
+            <div>
+                <h1>مقالات</h1>
+                <p>تازه‌ترین بررسی‌ها و راهنماهای خرید لپ‌تاپ و تجهیزات جانبی</p>
+            </div>
+            <div class="filters">
+                <span class="filter active">همه</span>
+                <span class="filter">لپ‌تاپ</span>
+                <span class="filter">گیمینگ</span>
+                <span class="filter">بررسی محصول</span>
+                <span class="filter">راهنمای خرید</span>
+            </div>
+        </div>
+
+        <div class="featured">
+            <div class="media">
+                <span class="badge">مقاله ویژه</span>
+            </div>
+            <div class="content">
+                <span class="cat">راهنمای خرید</span>
+                <h2>راهنمای کامل انتخاب لپ‌تاپ ایسوس؛ کدام سری برای چه کاربری مناسب است؟</h2>
+                <p>از سری VivoBook برای استفاده روزمره تا ROG Strix برای گیمینگ سنگین؛ در این راهنما تفاوت سری‌های مختلف ایسوس و نکات کلیدی انتخاب پردازنده، گرافیک و صفحه‌نمایش را بررسی می‌کنیم.</p>
+                <div class="meta">
+                    <span>تحریریه</span>
+                    <span class="dot"></span>
+                    <span>۲۲ تیر ۱۴۰۴</span>
+                    <span class="dot"></span>
+                    <span>۸ دقیقه مطالعه</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid">
+
+            <div class="card">
+                <div class="thumb laptop"><span class="tag">لپ‌تاپ</span></div>
+                <div class="body">
+                    <h3>بررسی ایسوس ZenBook 14 OLED؛ سبک، قدرتمند و مناسب کار حرفه‌ای</h3>
+                    <p>نگاهی به کیفیت نمایشگر OLED، عمر باتری و عملکرد این لپ‌تاپ فوق‌سبک در کارهای روزمره و طراحی.</p>
+                    <div class="meta">
+                        <span>تحریریه</span>
+                        <span class="dot"></span>
+                        <span>۵ دقیقه مطالعه</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="thumb gaming"><span class="tag">گیمینگ</span></div>
+                <div class="body">
+                    <h3>ایسوس ROG Strix G16 در برابر رقبا؛ آیا ارزش خرید دارد؟</h3>
+                    <p>مقایسه دما، عملکرد گرافیک و کیفیت صفحه‌نمایش ریفرش بالا در بازی‌های پرمصرف امروزی.</p>
+                    <div class="meta">
+                        <span>تحریریه</span>
+                        <span class="dot"></span>
+                        <span>۷ دقیقه مطالعه</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="thumb hardware"><span class="tag">تجهیزات جانبی</span></div>
+                <div class="body">
+                    <h3>بهترین کیف و پایه خنک‌کننده برای لپ‌تاپ‌های ۱۶ اینچی ایسوس</h3>
+                    <p>معرفی لوازم جانبی که عمر لپ‌تاپ شما را بیشتر می‌کند و در سفر و محل کار کاربردی هستند.</p>
+                    <div class="meta">
+                        <span>تحریریه</span>
+                        <span class="dot"></span>
+                        <span>۴ دقیقه مطالعه</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="thumb review"><span class="tag">بررسی محصول</span></div>
+                <div class="body">
+                    <h3>تجربه یک ماهه استفاده از ایسوس Zephyrus G14 برای کار و بازی</h3>
+                    <p>بررسی واقعی و بلندمدت یکی از سبک‌ترین لپ‌تاپ‌های گیمینگ بازار در استفاده روزمره.</p>
+                    <div class="meta">
+                        <span>تحریریه</span>
+                        <span class="dot"></span>
+                        <span>۶ دقیقه مطالعه</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="thumb laptop"><span class="tag">راهنمای خرید</span></div>
+                <div class="body">
+                    <h3>چه مقدار رم و حافظه برای لپ‌تاپ دانشجویی کافی است؟</h3>
+                    <p>راهنمای انتخاب مشخصات فنی مناسب بودجه دانشجویی بدون افت عملکرد در طول تحصیل.</p>
+                    <div class="meta">
+                        <span>تحریریه</span>
+                        <span class="dot"></span>
+                        <span>۳ دقیقه مطالعه</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="thumb hardware"><span class="tag">لپ‌تاپ</span></div>
+                <div class="body">
+                    <h3>مقایسه ایسوس VivoBook و TUF Gaming؛ کدام برای شما مناسب‌تر است؟</h3>
+                    <p>بررسی تفاوت قیمت، کیفیت ساخت و عملکرد این دو سری محبوب برای کاربران مختلف.</p>
+                    <div class="meta">
+                        <span>تحریریه</span>
+                        <span class="dot"></span>
+                        <span>۵ دقیقه مطالعه</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

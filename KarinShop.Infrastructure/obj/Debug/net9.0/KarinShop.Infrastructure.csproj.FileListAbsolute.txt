@@ -1,0 +1,11 @@
+C:\Users\User\source\repos\KarinShop\KarinShop.Infrastructure\bin\Debug\net9.0\KarinShop.Infrastructure.deps.json
+C:\Users\User\source\repos\KarinShop\KarinShop.Infrastructure\bin\Debug\net9.0\KarinShop.Infrastructure.dll
+C:\Users\User\source\repos\KarinShop\KarinShop.Infrastructure\bin\Debug\net9.0\KarinShop.Infrastructure.pdb
+C:\Users\User\source\repos\KarinShop\KarinShop.Infrastructure\obj\Debug\net9.0\KarinShop.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\User\source\repos\KarinShop\KarinShop.Infrastructure\obj\Debug\net9.0\KarinShop.Infrastructure.AssemblyInfoInputs.cache
+C:\Users\User\source\repos\KarinShop\KarinShop.Infrastructure\obj\Debug\net9.0\KarinShop.Infrastructure.AssemblyInfo.cs
+C:\Users\User\source\repos\KarinShop\KarinShop.Infrastructure\obj\Debug\net9.0\KarinShop.Infrastructure.csproj.CoreCompileInputs.cache
+C:\Users\User\source\repos\KarinShop\KarinShop.Infrastructure\obj\Debug\net9.0\KarinShop.Infrastructure.dll
+C:\Users\User\source\repos\KarinShop\KarinShop.Infrastructure\obj\Debug\net9.0\refint\KarinShop.Infrastructure.dll
+C:\Users\User\source\repos\KarinShop\KarinShop.Infrastructure\obj\Debug\net9.0\KarinShop.Infrastructure.pdb
+C:\Users\User\source\repos\KarinShop\KarinShop.Infrastructure\obj\Debug\net9.0\ref\KarinShop.Infrastructure.dll

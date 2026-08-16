@@ -1,0 +1,262 @@
+﻿@using KarinShop.Application.Services.Products.Queries.GetProductListForSite
+@addTagHelper *, LazZiya.TagHelpers
+@model ResultGetProductListForSite
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var ordering = Context.Request.Query["ordering"].ToString();
+
+    int PageNumber = 1;
+    int PageSize = 20;
+    int.TryParse(Context.Request.Query["Page"], out PageNumber);
+    int.TryParse(Context.Request.Query["PageSize"], out PageSize);
+
+}
+<style>
+    .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        list-style: none;
+        padding: 0;
+        margin: 20px 0;
+    }
+
+        .pagination li {
+            display: inline-block;
+        }
+
+            .pagination li a,
+            .pagination li span {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 40px;
+                height: 40px;
+                text-decoration: none;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+            }
+</style>
+<main class="container">
+    <!-- Breadcrumb -->
+    <nav class="flex mt-8 mr-2" aria-label="Breadcrumb">
+        <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
+            <li class="inline-flex items-center">
+                <a href="/" class="inline-flex items-center text-sm gap-x-1 text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
+                    <svg class="size-4 mb-0.5">
+                        <use href="#home"></use>
+                    </svg>
+                    صفحه اصلی
+                </a>
+            </li>
+            <li aria-current="page">
+                <div class="flex items-center">
+                    <svg class="rtl:rotate-180 w-3 h-3 text-gray-400 mx-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"></path>
+                    </svg>
+                    <span class="ms-1 text-sm text-gray-500 md:ms-2 dark:text-gray-400">فروشگاه</span>
+                </div>
+            </li>
+        </ol>
+    </nav>
+
+    <div class="flex flex-col lg:flex-row gap-4 mt-5 mx-2 md:mx-0">
+
+        <!-- SIDE FILTER BOX -->
+        <div class="lg:sticky top-1 h-fit lg:w-1/4 hidden lg:flex flex-col gap-y-4 items-center shadow rounded-lg py-4 dark:bg-gray-800 bg-white">
+            <!-- TITLE -->
+            <div class="flex items-center justify-between w-full px-2 xl:px-4">
+                <span class="flex items-center gap-x-1">
+                    <p class="font-DanaMedium text-gray-700 dark:text-gray-200 text-lg">فیلترها</p>
+                </span>
+                <p class="text-blue-500 dark:text-blue-400 text-sm cursor-pointer">حذف فیلتر‌ها</p>
+            </div>
+            <!-- FILTERS -->
+            <div class="w-full divide-y divide-slate-200 dark:divide-gray-700/20">
+                <!-- Accordion: دسته بندی -->
+                <div>
+                    <button onclick="toggleAccordion(1)" class="w-full flex justify-between items-center px-2 xl:px-4 pt-4 mb-4 text-gray-800 dark:text-gray-100">
+                        <span>دسته بندی</span>
+                        <span id="icon-1" class="text-gray-800 dark:text-gray-100">
+                            <svg class="size-4 transition-transform duration-300 -rotate-90">
+                                <use href="#chevron-left"></use>
+                            </svg>
+                        </span>
+                    </button>
+                    <div id="content-1" class="max-h-0 overflow-hidden transition-all duration-300 ease-in-out" style="max-height: 210px;">
+                        <div class="pb-3 text-gray-700 dark:text-gray-300 w-full flex flex-col gap-y-1.5">
+                         
+                                
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TOGGLE: فقط کالا های موجود -->
+                <div class="w-full justify-between flex items-center gap-x-3 px-2 xl:px-4 py-4" dir="ltr">
+                    <label for="hs-valid-toggle-switch" class="relative inline-block w-11 h-6 cursor-pointer">
+                        <input type="checkbox" id="hs-valid-toggle-switch" class="peer sr-only">
+                        <span class="absolute inset-0 bg-gray-200 rounded-full transition-colors duration-200 ease-in-out peer-checked:bg-blue-500 dark:bg-neutral-700 dark:peer-checked:bg-blue-500"></span>
+                        <span class="absolute top-1/2 start-0.5 -translate-y-1/2 size-5 bg-white rounded-full shadow-xs transition-transform duration-200 ease-in-out peer-checked:translate-x-full dark:bg-neutral-400 dark:peer-checked:bg-white"></span>
+                    </label>
+                    <label for="hs-valid-toggle-switch" class="text-gray-800 dark:text-gray-100">فقط کالا های موجود</label>
+                </div>
+
+                <!-- Accordion: محدوده قیمت -->
+                <div>
+                    <button onclick="toggleAccordion(2)" class="w-full flex justify-between items-center px-2 xl:px-4 py-4 text-gray-800 dark:text-gray-100">
+                        <span>محدوده قیمت</span>
+                        <span id="icon-2" class="text-gray-800 dark:text-gray-100">
+                            <svg class="size-4 transition-transform duration-300">
+                                <use href="#chevron-left"></use>
+                            </svg>
+                        </span>
+                    </button>
+                    <div id="content-2" class="price-slider max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
+                        <div class="pb-3 text-gray-700 dark:text-gray-300 w-full px-4">
+                            <div class="wrapper mt-5">
+                                <div class="slider-bar">
+                                    <div class="progress"></div>
+                                </div>
+                                <div class="range-input">
+                                    <input type="range" min="0" max="100000" value="0" class="min-range">
+                                    <input type="range" min="0" max="100000" value="35000" class="max-range">
+                                </div>
+                                <div class="price-input mt-4 text-gray-800 dark:text-gray-500">
+                                    <div class="field justify-start">
+                                        <span class="text-sm font-DanaMedium mr-2">تومان</span>
+                                        <p class="min-input">0</p>
+                                    </div>
+                                    <div class="field justify-end">
+                                        <span class="text-sm font-DanaMedium mr-2">تومان</span>
+                                        <p class="max-input">350,000</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TOP FILTER BOX & PRODUCT & PAGINATION -->
+        <div class="lg:w-3/4">
+
+            <!-- MOBILE FILTERS -->
+            <div class="flex lg:hidden items-center gap-x-2">
+                <button class="sort-modal-open text-sm mb-4 py-1.5 px-3 app-border rounded-full flex items-center gap-x-1">
+                    <svg class="size-4 text-gray-400">
+                        <use href="#sort-list"></use>
+                    </svg>
+                    <p>مرتبط ترین</p>
+                </button>
+                <button class="filter-modal-open text-sm mb-4 py-1.5 px-3 app-border rounded-full flex items-center gap-x-1">
+                    <svg class="size-4 text-gray-400">
+                        <use href="#filter"></use>
+                    </svg>
+                    <p>فیلتر</p>
+                </button>
+                <span class="text-sm text-gray-400 ms-auto py-1.5 px-4">@Model.TotalRow کالا</span>
+            </div>
+
+            <!-- TOP FILTER BOX (Desktop) -->
+            <div class="hidden lg:flex items-center justify-between mb-6">
+                <div class="flex items-center gap-x-5">
+                    <div class="flex items-center gap-x-2">
+                        <svg class="size-6 text-gray-400">
+                            <use href="#sort-list"></use>
+                        </svg>
+                        <h2 class="font-DanaDemiBold text-gray-400">مرتب سازی :</h2>
+                    </div>
+                    <ul class="flex items-center gap-x-1 lg:gap-x-4 child:transition-all child:cursor-pointer child:rounded-lg child:px-1 child:py-1 child:text-sm child:lg:text-base">
+                        <li class="text-400"><a href="~/Products?SearchKey=@Context.Request.Query["SearchKey"]&CatID=@Context.Request.Query["CatID"]&ordering=0">پر بازدید ترین </a></li>
+                        <li class="text-400"><a href="~/Products?SearchKey=@Context.Request.Query["SearchKey"]&CatID=@Context.Request.Query["CatID"]&ordering=1"> جدید ترین </a></li>
+                        <li class="text-400"><a href="~/Products?SearchKey=@Context.Request.Query["SearchKey"]&CatID=@Context.Request.Query["CatID"]&ordering=2"> گران ترین </a></li>
+                        <li class="text-400"><a href="~/Products?SearchKey=@Context.Request.Query["SearchKey"]&CatID=@Context.Request.Query["CatID"]&ordering=3"> ارزان ترین </a></li>
+                    </ul>
+                </div>
+                <span class="text-sm text-gray-400 end">@Model.TotalRow کالا</span>
+            </div>
+
+            <!-- PRODUCTS -->
+            <div class="grid grid-cols-1 xxs:grid-cols-2 xs:grid-cols-2 sm:grid-cols-2 xl:grid-cols-3 gap-3 xs:gap-2 sm:gap-4">
+                @foreach (var item in Model.Product)
+                {
+                    <div class="product-card group">
+                        <!-- product header -->
+                        <div class="product-card_header">
+                            <div class="flex items-center gap-x-2">
+                                <div class="tooltip">
+                                    <button class="rounded-full p-1.5 app-border app-hover">
+                                        <svg class="size-4">
+                                            <use href="#shopping-cart"></use>
+                                        </svg>
+                                    </button>
+                                    <div class="tooltiptext">سبد خرید</div>
+                                </div>
+                                <div class="tooltip">
+                                    <button class="rounded-full p-1.5 app-border app-hover">
+                                        <svg class="size-4">
+                                            <use href="#heart"></use>
+                                        </svg>
+                                    </button>
+                                    <div class="tooltiptext">علاقه مندی</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- product img -->
+                        <a href="/Products/Detail/@item.ID">
+                            <img class="product-card_img" src="~/@item.ImageSrc" alt="@item.Title">
+                        </a>
+
+                        <!-- product footer -->
+                        <div class="space-y-2">
+                            <a href="/Products/Detail/@item.ID" class="product-card_link">
+                                @item.Title
+                            </a>
+                            <div class="product-card_price-wrapper">
+                                <div class="product-card_rate">
+                                    <span class="flex items-center gap-x-0.5">
+                                        <svg class="size-4 text-blue-500 mb-0.5">
+                                            <use href="#rocket"></use>
+                                        </svg>
+                                        <p class="text-xs">ارسال امروز</p>
+                                    </span>
+                                </div>
+                                <div class="product-card_price">
+
+                                    <p>@item.Price.ToString("n0")</p>
+                                    <span>تومان</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <!-- PAGINATION -->
+            <div class="pagination-product">
+                <nav aria-label="Page navigation example">
+                    <paging total-records="@Model.TotalRow"
+                            page-no="@PageNumber == 0 ? 1 : PageNumber"
+                            page-size="@PageSize == 0 ? 20 : PageSize"
+                            show-prev-next="true"
+                            show-total-pages="false"
+                            show-total-records="false"
+                            show-page-size-nav="true"
+                            show-first-numbered-page="true"
+                            show-last-numbered-page="true"
+                            query-string-key-page-no="Page"
+                            query-string-key-page-size="PageSize"
+                            query-string-value="@@(Request.QueryString.Value)"
+                            gap-size="2">
+                    </paging>
+
+                </nav>
+            </div>
+        </div>
+    </div>
+</main>

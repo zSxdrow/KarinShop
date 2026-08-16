@@ -1,0 +1,328 @@
+﻿@using KarinShop.Application.Services.Users.Queries.GetUsers
+
+
+@{
+    Layout = "_Layout";
+}
+@model ResultGetUserDto
+
+<div class="p-6">
+    <!-- Card -->
+    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
+
+        <!-- Card Header -->
+        <div class="flex items-center justify-between p-5 border-b border-gray-200 dark:border-gray-600">
+            <h4 class="text-lg font-DanaMedium text-gray-800 dark:text-gray-100">لیست کاربران</h4>
+        </div>
+
+        <!-- Card Body -->
+        <div class="p-5">
+
+            <!-- Search -->
+            <form method="get" class="flex items-center gap-x-3 mb-6">
+                <label class="text-sm text-gray-600 dark:text-gray-300 font-DanaMedium">جستجو :</label>
+                <input type="text"
+                       id="searchkey"
+                       name="searchkey"
+                       class="px-4 py-2 rounded-xl border border-gray-200 dark:border-gray-600
+                              bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-100
+                              focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all text-sm" />
+                <button type="submit"
+                        class="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-xl text-sm font-DanaMedium transition-all">
+                    جستجو
+                </button>
+            </form>
+
+            <!-- Table -->
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm text-right">
+                    <thead>
+                        <tr class="bg-gray-50 dark:bg-gray-700 text-gray-600 dark:text-gray-300">
+                            <th class="px-4 py-3 rounded-r-xl font-DanaMedium">ID</th>
+                            <th class="px-4 py-3 font-DanaMedium">نام</th>
+                            <th class="px-4 py-3 font-DanaMedium">نام کاربری</th>
+                            <th class="px-4 py-3 rounded-l-xl font-DanaMedium">عملیات</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100 dark:divide-gray-700">
+                        @foreach (var item in Model.Users)
+                        {
+                            <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-all text-gray-700 dark:text-gray-300">
+                                <td class="px-4 py-3">@item.ID</td>
+                                <td class="px-4 py-3">@item.Name</td>
+                                <td class="px-4 py-3">@item.UserName</td>
+                                <td class="px-4 py-3">
+                                    <div class="flex items-center gap-x-2">
+                                        <!-- ویرایش -->
+                                        <button onclick="ShowModalEdituser('@item.ID', '@item.Name')"
+                                                class="px-3 py-1.5 bg-blue-500 hover:bg-blue-600 text-white rounded-lg text-xs font-DanaMedium transition-all">
+                                            ویرایش
+                                        </button>
+                                        <!-- حذف -->
+                                        <button onclick="DeleteUser('@item.ID')"
+                                                class="px-3 py-1.5 bg-red-500 hover:bg-red-600 text-white rounded-lg text-xs font-DanaMedium transition-all">
+                                            حذف
+                                        </button>
+                                        <!-- وضعیت -->
+                                        @if (item.IsActive)
+                                        {
+                                            <button onclick="UserSatusChange('@item.ID')"style="background-color:cornflowerblue"
+                                                    class="px-3 py-1.5 bg-orange-400 hover:bg-orange-500 text-white rounded-lg text-xs font-DanaMedium transition-all">
+                                                غیرفعال
+                                            </button>
+                                        }
+                                        else
+                                        {
+                                            <button onclick="UserSatusChange('@item.ID')"
+                                                    class="px-3 py-1.5 bg-green-500 hover:bg-green-600 text-white rounded-lg text-xs font-DanaMedium transition-all">
+                                                فعال
+                                            </button>
+                                        }
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            <div class="flex items-center justify-between mt-6 text-sm text-gray-500 dark:text-gray-400">
+                <p>نمایش 1 تا 10 از 57 سطر</p>
+                <div class="flex items-center gap-x-1">
+                    <a href="#" class="px-3 py-1.5 rounded-lg border border-gray-200 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all">قبلی</a>
+                    <a href="#" class="px-3 py-1.5 rounded-lg bg-blue-600 text-white">1</a>
+                    <a href="#" class="px-3 py-1.5 rounded-lg border border-gray-200 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all">2</a>
+                    <a href="#" class="px-3 py-1.5 rounded-lg border border-gray-200 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all">3</a>
+                    <a href="#" class="px-3 py-1.5 rounded-lg border border-gray-200 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all">بعدی</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <link href="~/Sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+    <script src="~/Sweetalert2/sweetalert2.min.js"></script>
+
+    <script>
+        function DeleteUser(UserId) { // نام پارامتر در تابع و postData یکسان باشد
+            swal.fire({
+                title: 'حذف کاربر',
+                text: "کاربر گرامی از حذف کاربر مطمئن هستید؟",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#7cacbe',
+                confirmButtonText: 'بله ، کاربر حذف شود',
+                cancelButtonText: 'خیر'
+            }).then((result) => {
+                if (result.value) {
+                    var postData = {
+                        'UserID': UserId, // پارامتر در کنترلر UserID است
+                    };
+
+                    $.ajax({
+                        contentType: 'application/x-www-form-urlencoded',
+                        dataType: 'json',
+                        type: "POST",
+                        url: "Delete", // مسیر درست است
+                        data: postData,
+                        success: function (data) {
+                            if (data.isSuccess == true) {
+                                swal.fire(
+                                    'موفق!',
+                                    data.message,
+                                    'success'
+                                ).then(function (isConfirm) {
+                                    location.reload();
+                                });
+                            }
+                            else {
+                                swal.fire(
+                                    'هشدار!',
+                                    data.message,
+                                    'warning'
+                                );
+                            }
+                        },
+                        error: function (request, status, error) {
+                            alert(request.responseText);
+                        }
+                    });
+                }
+            })
+        }
+
+        function UserSatusChange(UserId) { // نام پارامتر در تابع و postData یکسان باشد
+            swal.fire({
+                title: 'تغییر وضعیت کاربر',
+                text: "کاربر گرامی از تغییر وضعیت کاربر مطمئن هستید؟",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#7cacbe',
+                confirmButtonText: 'بله ، تغییر وضعیت انجام شود',
+                cancelButtonText: 'خیر'
+            }).then((result) => {
+                if (result.value) {
+                    var postData = {
+                        'UserID': UserId, // پارامتر در کنترلر UserID است
+                    };
+
+                    $.ajax({
+                        contentType: 'application/x-www-form-urlencoded',
+                        dataType: 'json',
+                        type: "POST",
+                        url: "UserStatusChange", // *** اصلاح شده: S بزرگ در Status ***
+                        data: postData,
+                        success: function (data) {
+                            if (data.isSuccess == true) {
+                                swal.fire(
+                                    'موفق!',
+                                    data.message,
+                                    'success'
+                                ).then(function (isConfirm) {
+                                    location.reload();
+                                });
+                            }
+                            else {
+                                swal.fire(
+                                    'هشدار!',
+                                    data.message,
+                                    'warning'
+                                );
+                            }
+                        },
+                        error: function (request, status, error) {
+                            alert(request.responseText);
+                        }
+                    });
+                }
+            })
+        }
+
+        function Edituser() {
+               
+            var userId = $("#Edit_UserId").val();
+            var fullName = $("#Edit_Fullname").val();
+
+            var postData = {
+                'UserID': userId, // *** اصلاح شده: U بزرگ در UserID ***
+                'Name': fullName,   // *** اصلاح شده: پارامتر Name است نه FullName ***
+            };
+
+            $.ajax({
+                contentType: 'application/x-www-form-urlencoded',
+                dataType: 'json',
+                type: "POST",
+                url: "Edit", // مسیر درست است
+                data: postData,
+                success: function (data) {
+                    if (data.isSuccess == true) {
+                        swal.fire(
+                            'موفق!',
+                            data.message,
+                            'success'
+                        ).then(function (isConfirm) {
+                            location.reload();
+                        });
+                    }
+                    else {
+                        swal.fire(
+                            'هشدار!',
+                            data.message,
+                            'warning'
+                        );
+                    }
+                },
+                error: function (request, status, error) {
+                    alert(request.responseText);
+                }
+            });
+            // این خط باید بعد از موفقیت AJAX یا در error handler باشد، یا کلاً حذف شود اگر نمی‌خواهید بلافاصله بسته شود.
+            // اگر می‌خواهید بعد از ارسال موفق بسته شود، آن را به داخل success callback منتقل کنید.
+             $('#EditUser').modal('hide');
+        }
+
+        function ShowModalEdituser(UserId, fullName) {
+            $('#Edit_Fullname').val(fullName);
+            $('#Edit_UserId').val(UserId);
+
+             openEditModal();
+        }
+    </script>
+}
+
+@section Modals
+{
+    <div id="EditUser" class="fixed inset-0 z-50 hidden items-center justify-center">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="closeEditModal()"></div>
+
+        <!-- Modal Box -->
+        <div class="relative bg-white dark:bg-gray-800 rounded-2xl shadow-xl w-full max-w-md mx-4 z-10">
+
+            <!-- Header -->
+            <div class="flex items-center justify-between p-5 border-b border-gray-200 dark:border-gray-600">
+                <h5 class="text-lg font-DanaMedium text-gray-800 dark:text-gray-100">ویرایش کاربر</h5>
+                <button onclick="closeEditModal()"
+                        class="p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-300 transition-all">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="size-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Body -->
+            <div class="p-5 space-y-4">
+                <input type="hidden" id="Edit_UserId" />
+                <div class="flex flex-col gap-y-2">
+                    <label class="text-sm font-DanaMedium text-gray-700 dark:text-gray-300">
+                        نام و نام خانوادگی
+                    </label>
+                    <input type="text"
+                           id="Edit_Fullname"
+                           class="w-full px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-600
+                                      bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-100
+                                      focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all" />
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="flex items-center justify-end gap-x-3 p-5 border-t border-gray-200 dark:border-gray-600">
+                <button onclick="closeEditModal()"
+                        class="px-4 py-2 rounded-xl border border-gray-200 dark:border-gray-600
+                                   text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700
+                                   transition-all text-sm font-DanaMedium">
+                    بستن
+                </button>
+                <button onclick="Edituser()"
+                        class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700
+                                   text-white transition-all text-sm font-DanaMedium">
+                    اعمال تغییرات
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openEditModal() {
+            const modal = document.getElementById('EditUser');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeEditModal() {
+            const modal = document.getElementById('EditUser');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeEditModal();
+        });
+    </script>
+}

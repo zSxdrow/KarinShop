@@ -1,0 +1,567 @@
+﻿
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>کارین شاپ</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="~/vendors/jquery/jquery-3.2.1.min.js"></script>
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Dana', 'Vazir', Tahoma, sans-serif;
+            background: #eef2f7;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        /* ========== دسکتاپ ========== */
+        .auth-wrap {
+            width: 100%;
+            max-width: 860px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 24px 64px rgba(0,0,0,0.14);
+            position: relative;
+        }
+
+        .slider-track {
+            display: flex;
+            width: 200%;
+            transition: transform 0.85s cubic-bezier(0.76, 0, 0.24, 1);
+            will-change: transform;
+        }
+
+            .slider-track.go-left {
+                transform: translateX(50%);
+            }
+
+        .auth-card {
+            width: 50%;
+            min-height: 540px;
+            display: flex;
+            flex-shrink: 0;
+        }
+
+        /* پنل برند */
+        .brand-panel {
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2.5rem 2rem;
+            color: #fff;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+
+            .brand-panel.green {
+                background: linear-gradient(150deg, #134e2e 0%, #1e6e47 45%, #2eab6e 100%);
+                border-radius: 20px 0 0 20px;
+            }
+
+            .brand-panel.blue {
+                background: linear-gradient(150deg, #0f2e5e 0%, #1848a8 45%, #3b7df8 100%);
+                border-radius: 0 20px 20px 0;
+            }
+
+        .bp-circle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.06);
+            pointer-events: none;
+        }
+
+        .bp-c1 {
+            width: 200px;
+            height: 200px;
+            top: -50px;
+            left: -50px;
+        }
+
+        .bp-c2 {
+            width: 260px;
+            height: 260px;
+            bottom: -70px;
+            right: -60px;
+        }
+
+        .bp-logo {
+            font-size: 32px;
+            margin-bottom: 1.2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .bp-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .bp-sub {
+            font-size: 13px;
+            color: rgba(255,255,255,0.78);
+            line-height: 2;
+            max-width: 200px;
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .bp-btn {
+            padding: 11px 28px;
+            border: 1.5px solid rgba(255,255,255,0.6);
+            border-radius: 10px;
+            color: #fff;
+            font-size: 14px;
+            font-family: inherit;
+            font-weight: 500;
+            cursor: pointer;
+            background: rgba(255,255,255,0.12);
+            transition: background 0.2s, transform 0.15s;
+            position: relative;
+            z-index: 1;
+        }
+
+            .bp-btn:hover {
+                background: rgba(255,255,255,0.24);
+                transform: translateY(-1px);
+            }
+
+            .bp-btn:active {
+                transform: scale(0.98);
+            }
+
+        /* پنل فرم */
+        .form-panel {
+            width: 50%;
+            background: #fff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 2.5rem 2.75rem;
+        }
+
+        .auth-card:first-child .brand-panel {
+            order: 1;
+        }
+
+        .auth-card:first-child .form-panel {
+            order: 2;
+            border-radius: 0 20px 20px 0;
+        }
+
+        .auth-card:last-child .form-panel {
+            order: 1;
+            border-radius: 20px 0 0 20px;
+        }
+
+        .auth-card:last-child .brand-panel {
+            order: 2;
+        }
+
+        /* فیلدها */
+        .form-title {
+            font-size: 19px;
+            font-weight: 700;
+            color: #111;
+            margin-bottom: 0.3rem;
+        }
+
+        .form-sub {
+            font-size: 13px;
+            color: #aaa;
+            margin-bottom: 1.5rem;
+        }
+
+        .field {
+            margin-bottom: 0.85rem;
+        }
+
+            .field label {
+                display: block;
+                font-size: 12px;
+                font-weight: 500;
+                color: #555;
+                margin-bottom: 5px;
+            }
+
+            .field input {
+                width: 100%;
+                height: 44px;
+                border-radius: 10px;
+                border: 1px solid #e0e0e0;
+                background: #f9f9f9;
+                color: #1a1a1a;
+                font-size: 13.5px;
+                font-family: inherit;
+                padding: 0 13px;
+                outline: none;
+                transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+                direction: ltr;
+                text-align: right;
+            }
+
+                .field input:focus {
+                    border-color: #2563eb;
+                    background: #fff;
+                    box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+                }
+
+                .field input::placeholder {
+                    color: #bbb;
+                    font-family: inherit;
+                }
+
+        .fields-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0 1rem;
+        }
+
+        .remember {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 1.1rem;
+            flex-direction: row-reverse;
+            justify-content: flex-end;
+        }
+
+            .remember input {
+                width: 15px;
+                height: 15px;
+                accent-color: #2563eb;
+                cursor: pointer;
+            }
+
+            .remember label {
+                font-size: 13px;
+                color: #666;
+                cursor: pointer;
+            }
+
+        .submit-btn {
+            width: 100%;
+            height: 46px;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 15px;
+            font-weight: 600;
+            font-family: inherit;
+            border: none;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.15s;
+            margin-bottom: 0.75rem;
+        }
+
+            .submit-btn.btn-green {
+                background: #1e6e47;
+            }
+
+                .submit-btn.btn-green:hover {
+                    background: #175c3b;
+                }
+
+            .submit-btn.btn-blue {
+                background: #2563eb;
+            }
+
+                .submit-btn.btn-blue:hover {
+                    background: #1d4ed8;
+                }
+
+            .submit-btn:active {
+                transform: scale(0.99);
+            }
+
+        .forgot-link {
+            display: block;
+            text-align: center;
+            font-size: 13px;
+            color: #aaa;
+            text-decoration: none;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+            .forgot-link:hover {
+                color: #2563eb;
+            }
+
+        /* ========== موبایل ========== */
+        @@media (max-width: 640px) {
+
+            body {
+                padding: 0;
+                align-items: stretch;
+                background: #fff;
+            }
+            /* روی موبایل slider خاموشه — فقط یه کارت می‌بینیم */
+            .auth-wrap {
+                border-radius: 0;
+                box-shadow: none;
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .slider-track {
+                width: 100%;
+                transform: none !important;
+                transition: none;
+                flex-direction: column;
+                flex: 1;
+            }
+            /* کارت‌ها روی موبایل با display:none/flex toggle می‌شن */
+            .auth-card {
+                width: 100%;
+                min-height: unset;
+                flex-direction: column;
+                flex: 1;
+                display: none;
+            }
+
+                .auth-card.mobile-active {
+                    display: flex;
+                }
+
+            .brand-panel {
+                width: 100%;
+                min-height: 200px;
+                border-radius: 0 !important;
+                padding: 2rem 1.5rem;
+            }
+
+                .brand-panel.green {
+                    border-radius: 0 !important;
+                }
+
+                .brand-panel.blue {
+                    border-radius: 0 !important;
+                }
+
+            .form-panel {
+                width: 100%;
+                border-radius: 0 !important;
+                padding: 1.75rem 1.5rem;
+                flex: 1;
+            }
+            /* ترتیب موبایل: برند بالا، فرم پایین */
+            .auth-card:first-child .brand-panel {
+                order: 1;
+            }
+
+            .auth-card:first-child .form-panel {
+                order: 2;
+            }
+
+            .auth-card:last-child .brand-panel {
+                order: 1;
+            }
+
+            .auth-card:last-child .form-panel {
+                order: 2;
+            }
+
+            .fields-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-title {
+                font-size: 17px;
+            }
+
+            .bp-title {
+                font-size: 20px;
+            }
+
+            .bp-sub {
+                font-size: 12px;
+                max-width: 100%;
+                margin-bottom: 1.25rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="auth-wrap">
+        <div class="slider-track" id="sliderTrack">
+
+            <!-- کارت ۱: ورود -->
+            <div class="auth-card mobile-active" id="card1">
+                <div class="brand-panel green">
+                    <div class="bp-circle bp-c1"></div>
+                    <div class="bp-circle bp-c2"></div>
+                    <div class="bp-logo">🛍️</div>
+                    <h2 class="bp-title">KarinShop</h2>
+                    <p class="bp-sub">فروشگاه اینترنتی کارین — خرید آسان، تحویل سریع، قیمت مناسب</p>
+                    <button class="bp-btn" onclick="goRegister()">ایجاد حساب کاربری</button>
+                </div>
+                <div class="form-panel">
+                    <h3 class="form-title">خوش آمدید 👋</h3>
+                    <p class="form-sub">برای ورود اطلاعات خود را وارد کنید</p>
+                    <div class="field">
+                        <label>نام کاربری</label>
+                        <input type="text" id="loginUser" placeholder="نام کاربری خود را وارد کنید">
+                    </div>
+                    <div class="field">
+                        <label>رمز عبور</label>
+                        <input type="password" id="loginPass" placeholder="••••••••">
+                    </div>
+                    <div class="remember">
+                        <input type="checkbox" id="keepLogin">
+                        <label for="keepLogin">مرا به خاطر بسپار</label>
+                    </div>
+                    <button class="submit-btn btn-green" onclick="Login()">ورود</button>
+                    <a class="forgot-link" href="#">رمز عبور را فراموش کرده‌اید؟</a>
+                </div>
+            </div>
+
+            <!-- کارت ۲: ثبت‌نام -->
+            <div class="auth-card" id="card2">
+                <div class="form-panel">
+                    <h3 class="form-title">ایجاد حساب کاربری</h3>
+                    <p class="form-sub">اطلاعات خود را برای ثبت‌نام وارد کنید</p>
+                    <div class="fields-grid">
+                        <div class="field">
+                            <label>نام</label>
+                            <input type="text" id="regName" placeholder="نام خود را وارد کنید">
+                        </div>
+                        <div class="field">
+                            <label>نام کاربری</label>
+                            <input type="text" id="regUser" placeholder="نام کاربری را وارد کنید">
+                        </div>
+                        <div class="field">
+                            <label>رمز عبور</label>
+                            <input type="password" id="regPass" placeholder="رمز عبور را وارد کنید">
+                        </div>
+                        <div class="field">
+                            <label>تکرار رمز عبور</label>
+                            <input type="password" id="regRePass" placeholder="رمز عبور را تکرار کنید">
+                        </div>
+                    </div>
+                    <div class="remember">
+                        <input type="checkbox" id="keepRegister">
+                        <label for="keepRegister">مرا وارد نگه دار</label>
+                    </div>
+                    <button class="submit-btn btn-blue" onclick="Registeruser()">ثبت نام</button>
+                </div>
+                <div class="brand-panel blue">
+                    <div class="bp-circle bp-c1"></div>
+                    <div class="bp-circle bp-c2"></div>
+                    <div class="bp-logo">🛍️</div>
+                    <h2 class="bp-title">KarinShop</h2>
+                    <p class="bp-sub">قبلاً ثبت‌نام کرده‌اید؟ وارد حساب خود شوید</p>
+                    <button class="bp-btn" onclick="goLogin()">ورود به حساب</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        var animating = false;
+        var isMobile = function() { return window.innerWidth <= 640; };
+
+        function goRegister() {
+            if (animating) return;
+            animating = true;
+            if (isMobile()) {
+                document.getElementById('card1').classList.remove('mobile-active');
+                document.getElementById('card2').classList.add('mobile-active');
+                window.scrollTo(0, 0);
+            } else {
+                document.getElementById('sliderTrack').classList.add('go-left');
+            }
+            setTimeout(function() { animating = false; }, 900);
+        }
+
+        function goLogin() {
+            if (animating) return;
+            animating = true;
+            if (isMobile()) {
+                document.getElementById('card2').classList.remove('mobile-active');
+                document.getElementById('card1').classList.add('mobile-active');
+                window.scrollTo(0, 0);
+            } else {
+                document.getElementById('sliderTrack').classList.remove('go-left');
+            }
+            setTimeout(function() { animating = false; }, 900);
+        }
+
+        function Login() {
+            var UserName = $('#loginUser').val();
+            var Password = $('#loginPass').val();
+            if (!UserName || !Password) {
+                Swal.fire('هشدار!', 'لطفاً نام کاربری و رمز عبور را وارد کنید', 'warning');
+                return;
+            }
+            $.ajax({
+                contentType: 'application/x-www-form-urlencoded',
+                dataType: 'json', type: 'POST', url: 'SignIn',
+                data: { UserName: UserName, Password: Password },
+                success: function(data) {
+                    if (data.isSuccess) {
+                        Swal.fire('موفق!', data.message, 'success').then(function() {
+                            window.location.replace('/');
+                        });
+                    } else { Swal.fire('هشدار!', data.message, 'warning'); }
+                },
+                error: function(request) { Swal.fire('هشدار!', request.responseText, 'warning'); }
+            });
+        }
+
+        function Registeruser() {
+            var Name     = $('#regName').val();
+            var UserName = $('#regUser').val();
+            var Password = $('#regPass').val();
+            var RePass   = $('#regRePass').val();
+            if (!Name || !UserName || !Password || !RePass) {
+                Swal.fire('هشدار!', 'لطفاً همه فیلدها را پر کنید', 'warning');
+                return;
+            }
+            Swal.fire({
+                title: 'ثبت نام', text: 'آیا می‌خواهید ثبت نام انجام شود؟', icon: 'info',
+                showCancelButton: true, confirmButtonColor: '#2563eb', cancelButtonColor: '#d33',
+                confirmButtonText: 'بله، ثبت نام شود', cancelButtonText: 'خیر'
+            }).then(function(result) {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        contentType: 'application/x-www-form-urlencoded',
+                        dataType: 'json', type: 'POST',
+                        url: '@Url.Action("Index", "Authentication")',
+                        data: { Name: Name, UserName: UserName, Password: Password, RePassword: RePass },
+                        success: function(data) {
+                            if (data.isSuccess) {
+                                Swal.fire('موفق!', data.message, 'success')
+                                    .then(function() { window.location.replace('/'); });
+                            } else { Swal.fire('هشدار!', data.message, 'warning'); }
+                        },
+                        error: function(request) { Swal.fire('هشدار!', request.responseText, 'warning'); }
+                    });
+                }
+            });
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,79 @@
+﻿
+@{
+    Layout = "_Layout2";
+}
+<div class="p-6">
+    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
+
+        <!-- Header -->
+        <div class="flex items-center p-5 border-b border-gray-200 dark:border-gray-600">
+            <h4 class="text-lg font-DanaMedium text-gray-800 dark:text-gray-100">
+                اضافه کردن دسته بندی جدید برای محصولات
+            </h4>
+        </div>
+
+        <!-- Body -->
+        <div class="p-5">
+            <input type="hidden" id="parentId" value="@ViewBag.ParentID" />
+            <div class="flex flex-col gap-y-2 max-w-sm">
+                <label class="text-sm font-DanaMedium text-gray-700 dark:text-gray-300">
+                    نام دسته بندی
+                </label>
+                <input type="text" id="Name"
+                       class="w-full px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-600
+                              bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-100
+                              focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all" />
+            </div>
+
+            <button onclick="AddNewCategory()"
+                    class="mt-5 w-full max-w-sm px-4 py-2.5 bg-green-500 hover:bg-green-600
+                           text-white rounded-xl text-sm font-DanaMedium transition-all">
+                اضافه کردن به لیست
+            </button>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function AddNewCategory() {
+            Swal.fire({
+                title: 'دسته بندی جدید',
+                text: "آیا میخواهید دسته بندی جدید به لیست اضافه شود؟",
+                icon: 'info',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'بله، اضافه شود',
+                cancelButtonText: 'خیر'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        contentType: 'application/x-www-form-urlencoded',
+                        dataType: 'json',
+                        type: "POST",
+                        url: "AddNewCategory",
+                        data: {
+                            Name: $("#Name").val(),
+                            parentId: $("#parentId").val()
+                        },
+                        success: function (data) {
+                            if (data.isSuccess) {
+                                Swal.fire('موفق!', data.message, 'success').then(() => {
+                                    location.href = "/Admin/Products/Category";
+                                });
+                            } else {
+                                Swal.fire('هشدار!', data.message, 'warning');
+                            }
+                        },
+                        error: function (request) {
+                            Swal.fire('هشدار!', request.responseText, 'warning');
+                        }
+                    });
+                }
+            });
+        }
+    </script>
+}

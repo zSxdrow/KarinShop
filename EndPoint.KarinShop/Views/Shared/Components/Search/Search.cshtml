@@ -1,0 +1,160 @@
+﻿@using KarinShop.Application.Services.Common.GetCategory
+@using Microsoft.AspNetCore.Mvc.Rendering
+@model List<GetCategoryDto>
+@{
+    Layout = null;
+}
+
+<style>
+    /* ===== Karin Search Box - category select ===== */
+    .karin-search-box {
+        width: 21rem;
+    }
+
+    @@media (min-width: 1024px) {
+        .karin-search-box {
+            width: 26rem;
+        }
+    }
+
+    .karin-search-divider {
+        width: 1px;
+        height: 1.75rem;
+        background-color: rgb(229 231 235);
+        flex-shrink: 0;
+    }
+
+    .dark .karin-search-divider {
+        background-color: rgb(75 85 99);
+    }
+
+    .karin-select-wrap {
+        position: relative;
+        flex-shrink: 0;
+    }
+
+        .karin-select-wrap select {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background: transparent;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            font-size: 0.8125rem;
+            color: rgb(75 85 99);
+            padding: 0.25rem 1.25rem 0.25rem 0.25rem;
+            max-width: 6.5rem;
+        }
+
+    .dark .karin-select-wrap select {
+        color: rgb(209 213 219);
+    }
+
+    .karin-select-wrap select option {
+        color: #111827;
+    }
+
+    .karin-select-chevron {
+        position: absolute;
+        top: 50%;
+        left: 0.15rem;
+        transform: translateY(-50%);
+        pointer-events: none;
+        color: rgb(156 163 175);
+    }
+</style>
+
+<div class="relative z-20 karin-search-box">
+    <!-- INPUT + CATEGORY -->
+    <form asp-action="Index" asp-controller="Products" method="get">
+         <div class="search-btn-open flex items-center gap-x-2 app-border bg-gray-50 dark:bg-gray-700 p-1 rounded-full ring-blue-400 transition-all">
+            <button type="submit" method="post">
+        <svg class="size-6 p-1.5 flex-center text-gray-100 bg-blue-600 rounded-full w-9 h-9 shrink-0">
+                
+            <use href="#search" />
+        </svg>
+        </button>   
+        <input placeholder="جستجو در کارین..." type="text" name="SearchKey" class="flex-1 min-w-0 bg-transparent text-sm placeholder:text-gray-400" />
+
+        <span class="karin-search-divider"></span>  
+
+        <div class="karin-select-wrap">
+                <select name="CatID" onclick="event.stopPropagation()" onmousedown="event.stopPropagation()"
+                    asp-items="@(new SelectList(Model, "ID", "Name"))">
+                <option value="">همه دسته‌ها</option>
+            </select>
+            <svg class="karin-select-chevron size-3.5">
+               
+            </svg>
+        </div>
+    </div>
+    </form>
+    <!-- Search Modal -->
+    <div class="search-modal space-y-4">
+        <!-- Result -->
+        <div>
+            <span class="flex items-center text-sm gap-x-1 text-gray-600 dark:text-gray-200">
+                <p>نتیجه جستجو : <span class="font-DanaMedium text-blue-400">iphone</span></p>
+            </span>
+            <ul class="pt-4 text-gray-500 dark:text-gray-300 flex flex-col gap-y-4 child:flex-between child:cursor-pointer">
+                <li>
+                    <a href="#" class="flex items-center gap-x-2">
+                        <svg class="size-5">
+                            <use href="#search" />
+                        </svg>
+                        آیفون 14
+                    </a>
+                    <svg class="size-4">
+                        <use href="#arrow-up-right" />
+                    </svg>
+                </li>
+                <li>
+                    <a href="#" class="flex items-center gap-x-2">
+                        <svg class="size-5">
+                            <use href="#search" />
+                        </svg>
+                        قاب آیفون
+                    </a>
+                    <svg class="size-4">
+                        <use href="#arrow-up-right" />
+                    </svg>
+                </li>
+                <li>
+                    <a href="#" class="flex items-center gap-x-2">
+                        <svg class="size-5">
+                            <use href="#search" />
+                        </svg>
+                        کاور ایفون 16
+                    </a>
+                    <svg class="size-4">
+                        <use href="#arrow-up-right" />
+                    </svg>
+                </li>
+            </ul>
+        </div>
+        <!-- Trend -->
+        <div class="pt-4">
+            <span class="flex items-center gap-x-1 text-sm text-gray-500 dark:text-gray-200">
+                <svg class="size-4">
+                    <use href="#fire" />
+                </svg>
+                <p>جستجو های پرطرفدار :</p>
+            </span>
+            <ul class="w-full flex items-center gap-1.5 mt-3 child:search-modal-list-item">
+                <li>
+                    <a href="#">#آیفون</a>
+                </li>
+                <li>
+                    <a href="#">#لپ تاپ</a>
+                </li>
+                <li>
+                    <a href="#">#هدفون</a>
+                </li>
+                <li>
+                    <a href="#">#هلدر</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

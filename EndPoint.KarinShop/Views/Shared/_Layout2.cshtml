@@ -1,0 +1,63 @@
+﻿<!doctype html>
+<html lang="en" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>قالب فروشگاهی کارین</title>
+    <link rel="stylesheet" href="~/styles/app.css">
+    <link rel="icon" href="~/favicon.ico" type="image/x-icon">
+
+    <!-- link -->
+    <link rel="stylesheet" href="~/swiper/swiper.css" />
+    <!-- ==========================  DARK MODE SCRIPT ============================= -->
+    <script type="text/javascript">
+        if (
+            localStorage.theme === "dark" ||
+            (!("theme" in localStorage) &&
+                window.matchMedia("(prefers-color-scheme: dark)").matches)
+        ) {
+            document.documentElement.classList.add("dark");
+        } else {
+            document.documentElement.classList.remove("dark");
+        }
+    </script>
+</head>
+
+<body>
+  
+@RenderBody()
+
+
+<!-- Overlay -->
+<div class="overlay"></div>
+<div class="search-overlay"></div>
+
+
+    <link rel="stylesheet" href="~/as/vendors/fontawesome/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <script src="~/as/Sweetalert2/sweetalert2.min.js"></script>
+    <script src="~/as/vendors/jquery/jquery-3.2.1.min.js"></script>
+    <script src="~/as/vendors/bootstrap/bootstrap.bundle.min.js"></script>
+    <script src="~/as/vendors/jquery/jquery-3.2.1.min.js"></script>
+    <script src="~/as/vendors/bootstrap/bootstrap.bundle.min.js"></script>
+    <script src="~/as/vendors/skrollr.min.js"></script>
+    <script src="~/as/vendors/owl-carousel/owl.carousel.min.js"></script>
+    <script src="~/as/vendors/nice-select/jquery.nice-select.min.js"></script>
+    <script src="~/as/vendors/jquery.ajaxchimp.min.js"></script>
+    <script src="~/as/vendors/mail-script.js"></script>
+    <script src="~/as/js/main.js"></script>
+    <script src="~/as/js/newFileEdit.js"></script>
+
+
+    <!-- فقط یه بار، قبل از بقیه اسکریپت‌ها -->
+    <script src="~/as/vendors/bootstrap/bootstrap.bundle.min.js"></script>
+    <script src="~/vendors/jquery/jquery-3.2.1.min.js"></script>
+    <script src="~/scripts/app.js"></script>
+    <script src="~/swiper/swiper.js"></script>
+  
+    @RenderSection("Scripts", false)
+    @RenderSection("Modals", false)
+</body>
+</html>

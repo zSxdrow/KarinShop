@@ -1,0 +1,504 @@
+﻿@{
+    Layout = "_Layout";
+}
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add - Product</title>
+    <link rel="icon" href="~/img/Fevicon.png" type="image/png">
+    <link rel="stylesheet" href="~/vendors/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="~/css/style.css">
+    <link href="~/Sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+    <style>
+        * {
+            direction:rtl;
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            direction: rtl;
+            text-align: right;
+            background: #f5f6fa;
+        }
+
+        .page-header {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            padding: 2.5rem 2rem;
+            text-align: center;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+        }
+
+            .page-header h1 {
+                color: #e2e8f0;
+                font-size: 22px;
+                font-weight: 500;
+                margin-bottom: .5rem;
+            }
+
+        .breadcrumb-custom {
+            color: #94a3b8;
+            font-size: 13px;
+        }
+
+            .breadcrumb-custom .active {
+                color: #7c9ec9;
+            }
+
+        .card {
+            background: #fff;
+            border: 1px solid #e8eaed;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: #6b7280;
+            margin-bottom: 1rem;
+            padding-bottom: .5rem;
+            border-bottom: 1px solid #e8eaed;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+            .section-title i {
+                font-size: 16px;
+                color: #3b82f6;
+            }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        label {
+            font-size: 13px;
+            color: #6b7280;
+            font-weight: 500;
+        }
+
+        .form-control-custom {
+            width: 100%;
+            padding: 9px 12px;
+            border: 1px solid #e8eaed;
+            border-radius: 8px;
+            background: #f9fafb;
+            color: #111827;
+            font-size: 14px;
+            font-family: inherit;
+            transition: border-color .15s;
+        }
+
+            .form-control-custom:focus {
+                outline: none;
+                border-color: #3b82f6;
+                background: #fff;
+            }
+
+        textarea.form-control-custom {
+            resize: vertical;
+            min-height: 120px;
+            line-height: 1.6;
+        }
+
+        .checkbox-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            background: #f9fafb;
+            border: 1px solid #e8eaed;
+            border-radius: 8px;
+        }
+
+            .checkbox-row input[type=checkbox] {
+                width: 16px;
+                height: 16px;
+                accent-color: #3b82f6;
+            }
+
+            .checkbox-row label {
+                margin: 0;
+                font-size: 14px;
+                color: #111827;
+                cursor: pointer;
+            }
+
+        .feature-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr auto;
+            gap: 8px;
+            align-items: end;
+        }
+
+        .btn-add-feature {
+            background: #f0fdf4;
+            color: #16a34a;
+            border: 1px solid #bbf7d0;
+            padding: 10px 18px;
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: 8px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-family: inherit;
+            transition: background .15s;
+        }
+
+            .btn-add-feature:hover {
+                background: #16a34a;
+                color: #fff;
+            }
+
+        .btn-danger-sm {
+            background: #fef2f2;
+            color: #dc2626;
+            border: 1px solid #fecaca;
+            padding: 5px 10px;
+            font-size: 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: inherit;
+            transition: background .15s;
+        }
+
+            .btn-danger-sm:hover {
+                background: #dc2626;
+                color: #fff;
+            }
+
+        .btn-file {
+            width: 100%;
+            padding: 20px;
+            border: 1.5px dashed #d1d5db;
+            border-radius: 8px;
+            background: #f9fafb;
+            color: #9ca3af;
+            font-size: 13px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            transition: border-color .15s, background .15s;
+            font-family: inherit;
+        }
+
+            .btn-file:hover {
+                border-color: #3b82f6;
+                background: #eff6ff;
+            }
+
+            .btn-file i {
+                font-size: 24px;
+                color: #6b7280;
+            }
+
+        .btn-submit {
+            width: 100%;
+            background: #16a34a;
+            color: #fff;
+            border: none;
+            padding: 20px 0;
+            font-size: 16px;
+            font-weight: 500;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: background .15s, transform .1s;
+            font-family: inherit;
+            margin-top: 12px;
+        }
+
+            .btn-submit:hover {
+                background: #15803d;
+            }
+
+            .btn-submit:active {
+                transform: scale(0.98);
+            }
+
+            .btn-submit i {
+                font-size: 18px;
+            }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        th {
+            background: #f9fafb;
+            color: #6b7280;
+            font-weight: 500;
+            padding: 8px 12px;
+            text-align: right;
+            border-bottom: 1px solid #e8eaed;
+        }
+
+        td {
+            padding: 9px 12px;
+            border-bottom: 1px solid #e8eaed;
+            color: #111827;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        tbody tr:hover {
+            background: #f9fafb;
+        }
+
+        .empty-table {
+            text-align: center;
+            color: #9ca3af;
+            font-size: 13px;
+            padding: 1.5rem;
+        }
+
+        .layout {
+            display: grid;
+            grid-template-columns: 5fr 7fr;
+            gap: 1rem;
+        }
+
+        .left-col {
+            display: flex;
+            flex-direction: column;
+        }
+
+        @@media (max-width: 768px) {
+            .layout
+
+        {
+            grid-template-columns: 1fr;
+        }
+
+        .form-grid {
+            grid-template-columns: 1fr;
+        }
+
+        }
+
+        input[type=file] {
+            display: none;
+        }
+
+        .wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="wrapper">
+        <div class="page-header">
+            <h1>افزودن محصول جدید</h1>
+            <div class="breadcrumb-custom">
+                <span>خانه</span> / <span class="active">افزودن محصول</span>
+            </div>
+        </div>
+
+        <form id="addProductForm" novalidate>
+            <div class="layout">
+                <!-- ستون چپ -->
+                <div class="left-col">
+                    <div class="card">
+                        <div class="section-title"><i class="fas fa-box"></i> اطلاعات پایه</div>
+                        <div style="display:flex;flex-direction:column;gap:10px">
+                            <div class="form-group">
+                                <label>نام محصول</label>
+                                <input class="form-control-custom" id="nameProduct" type="text" placeholder="مثلاً: گوشی سامسونگ A54">
+                            </div>
+                            <div class="form-group">
+                                <label>برند</label>
+                                <input class="form-control-custom" id="brandProduct" type="text" placeholder="مثلاً: Samsung">
+                            </div>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label>قیمت (تومان)</label>
+                                    <input class="form-control-custom" id="priceProduct" type="number" placeholder="۰">
+                                </div>
+                                <div class="form-group">
+                                    <label>موجودی</label>
+                                    <input class="form-control-custom" id="inventoryProduct" type="number" placeholder="۰">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>دسته‌بندی</label>
+                                <select class="form-control-custom" id="categoryProduct" asp-items="@ViewBag.Categories"></select>
+                            </div>
+                            <div class="checkbox-row">
+                                <input type="checkbox" id="displayedProduct">
+                                <label for="displayedProduct">نمایش در سایت</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- تصاویر + دکمه ثبت در یک کارت -->
+                    <div class="card">
+                        <div class="section-title"><i class="fas fa-images"></i> تصاویر محصول</div>
+                        <label class="btn-file" for="imagesProduct">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <span style="font-weight:500;color:#374151" id="uploadLabel">آپلود تصاویر</span>
+                            <span id="uploadSub">کلیک کنید یا فایل را اینجا رها کنید</span>
+                        </label>
+                        <input type="file" id="imagesProduct" multiple accept="image/*">
+
+                        <button type="button" id="btnSubmitForm" class="btn-submit">
+                            <i class="fas fa-check-circle"></i> ثبت محصول
+                        </button>
+                    </div>
+                </div>
+
+                <!-- ستون راست -->
+                <div>
+                    <div class="card">
+                        <div class="section-title"><i class="fas fa-align-right"></i> توضیحات</div>
+                        <div class="form-group">
+                            <textarea class="form-control-custom" id="descriptionProduct" rows="5" placeholder="توضیحات کامل محصول را وارد کنید..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="section-title"><i class="fas fa-list"></i> ویژگی‌ها</div>
+                        <div class="feature-row" style="margin-bottom:10px">
+                            <div class="form-group" style="margin:0">
+                                <input class="form-control-custom" type="text" id="txtDisplayName" placeholder="نام ویژگی">
+                            </div>
+                            <div class="form-group" style="margin:0">
+                                <input class="form-control-custom" type="text" id="txtValue" placeholder="مقدار">
+                            </div>
+                            <button type="button" class="btn-add-feature" id="btnAddFeatures">
+                                <i class="fas fa-plus"></i> افزودن
+                            </button>
+                        </div>
+
+                        <table id="tbl_Features">
+                            <thead>
+                                <tr><th>ویژگی</th><th>مقدار</th><th style="width:60px">حذف</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr class="empty-row"><td colspan="3" class="empty-table">هنوز ویژگی‌ای اضافه نشده</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <script src="~/vendors/jquery/jquery-3.2.1.min.js"></script>
+    <script src="~/Sweetalert2/sweetalert2.min.js"></script>
+    <script>
+        $("#btnAddFeatures").on("click", function () {
+            var txtDisplayName = $("#txtDisplayName").val().trim();
+            var txtValue = $("#txtValue").val().trim();
+
+            if (txtDisplayName == "" || txtValue == "") {
+                Swal.fire('هشدار!', "نام و مقدار ویژگی را وارد کنید", 'warning');
+            } else {
+                var emptyRow = $('#tbl_Features tbody .empty-row');
+                if (emptyRow.length) emptyRow.remove();
+
+                $('#tbl_Features tbody').append(
+                    '<tr><td>' + txtDisplayName + '</td><td>' + txtValue +
+                    '</td><td><button type="button" class="btn-danger-sm btnDelete"><i class="fas fa-trash"></i></button></td></tr>'
+                );
+                $("#txtDisplayName").val('');
+                $("#txtValue").val('');
+            }
+        });
+
+        $("#tbl_Features").on('click', '.btnDelete', function () {
+            $(this).closest('tr').remove();
+            if (!$('#tbl_Features tbody tr').length) {
+                $('#tbl_Features tbody').append(
+                    '<tr class="empty-row"><td colspan="3" class="empty-table">هنوز ویژگی‌ای اضافه نشده</td></tr>'
+                );
+            }
+        });
+
+        $("#imagesProduct").on('change', function () {
+            var count = this.files.length;
+            if (count > 0) {
+                $("#uploadLabel").text(count + ' تصویر انتخاب شد');
+                $("#uploadSub").text('برای تغییر دوباره کلیک کنید');
+            }
+        });
+
+        $('#btnSubmitForm').on('click', function (e) {
+            e.preventDefault();
+
+            var data = new FormData();
+            data.append("Name", $("#nameProduct").val());
+            data.append("Brand", $("#brandProduct").val());
+            data.append("Price", $("#priceProduct").val());
+            data.append("CategoryID", $('#categoryProduct').val());
+            data.append("Description", $("#descriptionProduct").val());
+            data.append("Inventory", $("#inventoryProduct").val());
+            data.append("Displayed", $("#displayedProduct").is(":checked"));
+
+            var fileInput = document.getElementById("imagesProduct");
+            if (fileInput.files.length > 0) {
+                for (var i = 0; i < fileInput.files.length; i++) {
+                    data.append("Images", fileInput.files[i]);
+                }
+            }
+
+            $('#tbl_Features tbody tr').each(function (i, row) {
+                var cells = $(row).find('td');
+                data.append("Features[" + i + "].DisplayName", cells.eq(0).text());
+                data.append("Features[" + i + "].Value", cells.eq(1).text());
+            });
+
+            $.ajax({
+                type: "POST",
+                url: "/Admin/Products/AddProduct",
+                contentType: false,
+                processData: false,
+                data: data,
+                success: function (res) {
+                    if (res.isSuccess) {
+                        Swal.fire('موفق!', res.message, 'success').then(function () {
+                            window.location.href = "/Admin/Products/index";
+                        });
+                    } else {
+                        Swal.fire('هشدار!', res.message, 'warning');
+                    }
+                },
+                error: function (xhr) {
+                    Swal.fire('خطا!', 'خطایی در ارتباط با سرور رخ داد', 'error');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

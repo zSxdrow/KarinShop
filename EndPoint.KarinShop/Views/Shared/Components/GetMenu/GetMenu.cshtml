@@ -1,0 +1,63 @@
+﻿@using KarinShop.Application.Services.Common.GetMenu
+@model List<GetMenuItemDto>
+@{
+    Layout = null;
+}
+<li class="menu-item megamenu-link">
+    <a href="#" class="menu-item_link flex items-center justify-center gap-x-1">
+        دسته بندی ها
+        <svg class="size-4">
+            <use href="#chevron"></use>
+        </svg>
+    </a>
+    <div class="megamenu">
+        <!-- ستون راست: لیست دسته‌ها -->
+        <ul class="megamenu_category">
+            @{
+                int i = 0;
+            }
+            @foreach (var item in Model)
+            {
+                <li class="megamenu_category-item @(i == 0 ? "active" : "")" data-index="@i">
+                    <svg class="w-5 h-5">
+                        <use href="#mobile"></use>
+                    </svg>
+                    <a href="#">@item.Name</a>
+                </li>
+                i++;
+            }
+        </ul>
+
+        <!-- ستون چپ: یک کانتینر ثابت، زیردسته‌ها روی هم قرار می‌گیرند -->
+        <div class="megamenu_left">
+            @{
+                int j = 0;
+            }
+            @foreach (var item in Model)
+            {
+                if (item.Child.Count() > 0)
+                {
+                    <ul class="megamenu_left-item @(j == 0 ? "active" : "")" data-index="@j">
+                        <a href="/Products/Index?CatID=@item.CatID"
+                           class="text-blue-400 flex items-center gap-x-0.5 text-sm mb-4">
+                            مشاهده همه
+                            <svg class="size-4 rotate-90">
+                                <use href="#chevron"></use>
+                            </svg>
+                        </a>
+                        <div class="megamenu_left-menu">
+                            <h2 class="megamenu_left-title">@item.Name</h2>
+                            @foreach (var item2 in item.Child)
+                            {
+                            <li>
+                                <a href="/Products/Index?CatID=@item2.CatID">@item2.Name</a>
+                            </li>
+                        }
+                </div>
+                </ul>
+            }
+            j++;
+        }
+    </div>
+    </div>
+</li>

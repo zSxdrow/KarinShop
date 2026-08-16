@@ -1,0 +1,377 @@
+﻿@{
+    ViewData["Title"] = "ContactUS";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    /* ===== Contact Page - Signature circuit-line accent ===== */
+    .contact-hero-grid {
+        background-image: radial-gradient(currentColor 1px, transparent 1px), radial-gradient(currentColor 1px, transparent 1px);
+        background-size: 26px 26px;
+        background-position: 0 0, 13px 13px;
+        color: rgb(59 130 246 / 0.25);
+    }
+
+    .contact-signal-track {
+        position: absolute;
+        top: 50%;
+        right: 0;
+        left: 0;
+        height: 2px;
+        transform: translateY(-50%);
+        background-image: repeating-linear-gradient(to left, rgb(59 130 246 / 0.35) 0 6px, transparent 6px 14px);
+    }
+
+    .contact-signal-dot {
+        position: absolute;
+        top: 50%;
+        width: 10px;
+        height: 10px;
+        border-radius: 9999px;
+        background: #3b82f6;
+        box-shadow: 0 0 0 4px rgb(59 130 246 / 0.15), 0 0 14px 2px rgb(59 130 246 / 0.6);
+        transform: translateY(-50%);
+        animation: contact-signal-move 5s linear infinite;
+    }
+
+    @@keyframes contact-signal-move {
+        0% {
+            right: 0%;
+            opacity: 0;
+        }
+
+        8% {
+            opacity: 1;
+        }
+
+        92% {
+            opacity: 1;
+        }
+
+        100% {
+            right: 100%;
+            opacity: 0;
+        }
+    }
+
+    .contact-card {
+        position: relative;
+        transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease;
+    }
+
+        .contact-card:hover {
+            transform: translateY(-6px);
+            border-color: rgb(59 130 246 / 0.5);
+            box-shadow: 0 20px 35px -15px rgb(59 130 246 / 0.25);
+        }
+
+    .contact-input {
+        width: 100%;
+        border-radius: 0.75rem;
+        padding: 0.75rem 1rem;
+        background-color: rgb(249 250 251);
+        border: 1px solid rgb(229 231 235);
+        transition: border-color .2s ease, box-shadow .2s ease;
+    }
+
+        .contact-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgb(59 130 246 / 0.15);
+        }
+
+    .dark .contact-input {
+        background-color: rgb(31 41 55);
+        border-color: rgb(55 65 81);
+        color: rgb(243 244 246);
+    }
+
+    .contact-faq-item[open] .contact-faq-chevron {
+        transform: rotate(180deg);
+    }
+
+    .contact-faq-chevron {
+        transition: transform .25s ease;
+    }
+</style>
+
+
+
+<!-- Hero -->
+<section class="container mt-4">
+    <div class="relative overflow-hidden rounded-3xl bg-gray-900 dark:bg-gray-950 text-gray-100 px-6 py-14 lg:px-16 lg:py-20">
+        <div class="contact-hero-grid absolute inset-0 opacity-60"></div>
+        <div class="relative z-10 max-w-2xl">
+            <span class="inline-flex items-center gap-x-2 rounded-full bg-blue-600/15 text-blue-400 px-4 py-1.5 text-sm font-DanaMedium">
+                <svg class="size-4">
+                    <use href="#headphone" />
+                </svg>
+                پشتیبانی کارین شاپ
+            </span>
+            <h1 class="font-MorabbaMedium text-3xl lg:text-5xl mt-5 leading-normal">
+                هر سوالی دارید، <span class="text-blue-500">یک پیام</span> فاصله دارید
+            </h1>
+            <p class="font-Dana text-gray-400 mt-4 leading-8 max-w-lg">
+                تیم پشتیبانی کارین شاپ همه‌روزه پاسخگوی سوالات شما درباره محصولات، سفارش‌ها، گارانتی و همکاری‌هاست.
+                از راه‌های زیر با ما در تماس باشید یا فرم را پر کنید تا در سریع‌ترین زمان پاسخ بگیرید.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- Contact info cards -->
+<section class="container mt-10">
+    <div class="relative grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- connecting signal line (desktop only) -->
+        <div class="hidden lg:block absolute inset-x-10 top-1/2 -translate-y-1/2 -z-0">
+            <div class="contact-signal-track"></div>
+            <div class="contact-signal-dot"></div>
+        </div>
+
+        <div class="contact-card app-border bg-white dark:bg-gray-800 rounded-2xl p-6 flex flex-col items-center text-center gap-y-3 z-10">
+            <span class="size-14 flex-center rounded-2xl bg-blue-600/10 text-blue-500">
+                <svg class="size-7">
+                    <use href="#phone" />
+                </svg>
+            </span>
+            <h3 class="font-DanaMedium text-lg">تماس تلفنی</h3>
+            <p class="text-gray-400 text-sm">پاسخگویی شنبه تا پنجشنبه، ۹ صبح تا ۸ شب</p>
+            <a dir="ltr" href="~/tel:02112345678" class="font-DanaMedium text-blue-500">021-12345678</a>
+        </div>
+
+        <div class="contact-card app-border bg-white dark:bg-gray-800 rounded-2xl p-6 flex flex-col items-center text-center gap-y-3 z-10">
+            <span class="size-14 flex-center rounded-2xl bg-blue-600/10 text-blue-500">
+                <svg class="size-7">
+                    <use href="#envelope" />
+                </svg>
+            </span>
+            <h3 class="font-DanaMedium text-lg">ایمیل</h3>
+            <p class="text-gray-400 text-sm">پاسخ ایمیل‌ها حداکثر ظرف ۲۴ ساعت کاری</p>
+            <a href="~/mailto:KarinShop@gmail.com" class="font-DanaMedium text-blue-500">KarinShop@gmail.com</a>
+        </div>
+
+        <div class="contact-card app-border bg-white dark:bg-gray-800 rounded-2xl p-6 flex flex-col items-center text-center gap-y-3 z-10">
+            <span class="size-14 flex-center rounded-2xl bg-blue-600/10 text-blue-500">
+                <svg class="size-7">
+                    <use href="#map" />
+                </svg>
+            </span>
+            <h3 class="font-DanaMedium text-lg">آدرس فروشگاه</h3>
+            <p class="text-gray-400 text-sm leading-7">تهران، بلوار آزادی، خیابان استاد معین، پلاک ۱۰</p>
+        </div>
+
+        <div class="contact-card app-border bg-white dark:bg-gray-800 rounded-2xl p-6 flex flex-col items-center text-center gap-y-3 z-10">
+            <span class="size-14 flex-center rounded-2xl bg-blue-600/10 text-blue-500">
+                <svg class="size-7">
+                    <use href="#calendar" />
+                </svg>
+            </span>
+            <h3 class="font-DanaMedium text-lg">ساعات کاری</h3>
+            <p class="text-gray-400 text-sm leading-7">شنبه تا پنجشنبه: ۹ الی ۲۰<br />جمعه‌ها: تعطیل</p>
+        </div>
+    </div>
+</section>
+
+<!-- Form + Map -->
+<section class="container mt-10 mb-16">
+    <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
+        <!-- Form -->
+        <div class="lg:col-span-3 app-border bg-white dark:bg-gray-800 rounded-2xl p-6 lg:p-10">
+            <h2 class="font-DanaMedium text-2xl mb-1">پیام خود را برای ما بفرستید</h2>
+            <p class="text-gray-400 text-sm mb-8">فرم زیر را پر کنید، همکاران ما در اسرع وقت با شما تماس می‌گیرند.</p>
+
+            <form id="contactForm" class="space-y-5">
+                @Html.AntiForgeryToken()
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                    <div>
+                        <label class="block text-sm font-DanaMedium mb-2" for="fullName">نام و نام خانوادگی</label>
+                        <input id="fullName" name="fullName" type="text" required class="contact-input" placeholder="مثلاً علی محمدی" />
+                    </div>
+                    <div>
+                        <label class="block text-sm font-DanaMedium mb-2" for="phoneNumber">شماره تماس</label>
+                        <input id="phoneNumber" name="phoneNumber" type="tel" dir="ltr" required class="contact-input" placeholder="09xxxxxxxxx" />
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-DanaMedium mb-2" for="email">ایمیل</label>
+                    <input id="email" name="email" type="email" dir="ltr" class="contact-input" placeholder="example@email.com" />
+                </div>
+
+                <div>
+                    <label class="block text-sm font-DanaMedium mb-2" for="subject">موضوع پیام</label>
+                    <select id="subject" name="subject" class="contact-input">
+                        <option value="product-support">پشتیبانی محصول</option>
+                        <option value="warranty">گارانتی و تعمیرات</option>
+                        <option value="order">پیگیری سفارش</option>
+                        <option value="cooperation">همکاری با کارین شاپ</option>
+                        <option value="other">سایر موارد</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-DanaMedium mb-2" for="message">متن پیام</label>
+                    <textarea id="message" name="message" rows="5" required class="contact-input resize-none" placeholder="پیام خود را اینجا بنویسید..."></textarea>
+                </div>
+
+                <button type="submit" class="w-full sm:w-auto flex-center gap-x-2 bg-blue-600 hover:bg-blue-700 transition-all text-white font-DanaMedium rounded-xl py-3 px-8">
+                    ارسال پیام
+                    <svg class="size-5">
+                        <use href="#arrow" />
+                    </svg>
+                </button>
+            </form>
+        </div>
+
+        <!-- Map + social -->
+        <div class="lg:col-span-2 flex flex-col gap-y-6">
+            <div class="app-border rounded-2xl overflow-hidden h-64 lg:h-72">
+                <iframe class="w-full h-full grayscale-[20%] dark:invert dark:hue-rotate-180"
+                        src="~/https://www.google.com/maps?q=تهران،بلوار آزادی&output=embed"
+                        style="border:0;"
+                        loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+            </div>
+
+            <div class="app-border bg-white dark:bg-gray-800 rounded-2xl p-6">
+                <h3 class="font-DanaMedium text-lg mb-4">ما را دنبال کنید</h3>
+                <div class="flex items-center gap-x-3">
+                    <a href="#" class="size-11 bg-gray-900 dark:bg-gray-900 rounded-xl flex-center hover:bg-blue-600 transition-colors">
+                        <svg class="size-5 text-blue-500 group-hover:text-white">
+                            <use href="#instagram" />
+                        </svg>
+                    </a>
+                    <a href="#" class="size-11 bg-gray-900 dark:bg-gray-900 rounded-xl flex-center hover:bg-blue-600 transition-colors">
+                        <svg class="size-5 text-blue-500">
+                            <use href="#whatsapp" />
+                        </svg>
+                    </a>
+                    <a href="#" class="size-11 bg-gray-900 dark:bg-gray-900 rounded-xl flex-center hover:bg-blue-600 transition-colors">
+                        <svg class="size-5 text-blue-500">
+                            <use href="#linkedin" />
+                        </svg>
+                    </a>
+                    <a href="#" class="size-11 bg-gray-900 dark:bg-gray-900 rounded-xl flex-center hover:bg-blue-600 transition-colors">
+                        <svg class="size-5 text-blue-500">
+                            <use href="#youtube" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+
+            <div class="app-border bg-blue-600 rounded-2xl p-6 text-white flex items-center gap-x-4">
+                <svg class="size-8 shrink-0">
+                    <use href="#check-badge" />
+                </svg>
+                <p class="text-sm leading-7">
+                    پاسخ‌گویی سریع، محرمانه و رایگان — قبل از تماس، سوالات متداول را هم ببینید.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ -->
+<section class="container mb-16">
+    <h2 class="font-DanaMedium text-2xl mb-6">سوالات پرتکرار</h2>
+    <div class="flex flex-col gap-y-3 max-w-3xl">
+        <details class="contact-faq-item app-border rounded-xl p-5 group" open>
+            <summary class="flex items-center justify-between cursor-pointer font-DanaMedium list-none">
+                چقدر طول می‌کشد تا به پیامم پاسخ داده شود؟
+                <svg class="contact-faq-chevron size-5 text-gray-400">
+                    <use href="#chevron" />
+                </svg>
+            </summary>
+            <p class="text-gray-400 text-sm mt-3 leading-7">
+                تیم پشتیبانی ما در ساعات کاری معمولاً ظرف چند ساعت و حداکثر تا ۲۴ ساعت کاری به پیام‌ها پاسخ می‌دهد.
+            </p>
+        </details>
+
+        <details class="contact-faq-item app-border rounded-xl p-5 group">
+            <summary class="flex items-center justify-between cursor-pointer font-DanaMedium list-none">
+                آیا امکان مراجعه حضوری به فروشگاه وجود دارد؟
+                <svg class="contact-faq-chevron size-5 text-gray-400">
+                    <use href="#chevron" />
+                </svg>
+            </summary>
+            <p class="text-gray-400 text-sm mt-3 leading-7">
+                بله، در ساعات کاری اعلام‌شده می‌توانید به آدرس فروشگاه مراجعه کنید و از نمایشگاه محصولات بازدید نمایید.
+            </p>
+        </details>
+
+        <details class="contact-faq-item app-border rounded-xl p-5 group">
+            <summary class="flex items-center justify-between cursor-pointer font-DanaMedium list-none">
+                برای پیگیری گارانتی محصول چه کاری باید انجام دهم؟
+                <svg class="contact-faq-chevron size-5 text-gray-400">
+                    <use href="#chevron" />
+                </svg>
+            </summary>
+            <p class="text-gray-400 text-sm mt-3 leading-7">
+                کافیست موضوع «گارانتی و تعمیرات» را در فرم بالا انتخاب کرده و شماره سفارش خود را در متن پیام ذکر کنید.
+            </p>
+        </details>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var form = document.getElementById('contactForm');
+            if (!form) return;
+
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                var payload = {
+                    fullName: document.getElementById('fullName').value,
+                    phoneNumber: document.getElementById('phoneNumber').value,
+                    email: document.getElementById('email').value,
+                    subject: document.getElementById('subject').value,
+                    message: document.getElementById('message').value
+                };
+
+                var token = form.querySelector('input[name="__RequestVerificationToken"]').value;
+
+                // نکته: مسیر زیر باید به اکشن واقعی کنترلر Contact شما وصل شود
+                fetch('@Url.Action("SendMessage", "Contact")', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'RequestVerificationToken': token
+                    },
+                    body: JSON.stringify(payload)
+                })
+                    .then(function (res) { return res.json(); })
+                    .then(function (response) {
+                        if (response.isSuccess) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'پیام شما ارسال شد',
+                                text: 'همکاران ما به‌زودی با شما تماس می‌گیرند.',
+                                confirmButtonText: 'متوجه شدم',
+                                reverseButtons: true
+                            });
+                            form.reset();
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'خطا در ارسال پیام',
+                                text: response.message || 'لطفاً دوباره تلاش کنید.',
+                                confirmButtonText: 'باشه',
+                                reverseButtons: true
+                            });
+                        }
+                    })
+                    .catch(function () {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'خطای ارتباط با سرور',
+                            text: 'لطفاً اتصال اینترنت خود را بررسی و دوباره تلاش کنید.',
+                            confirmButtonText: 'باشه',
+                            reverseButtons: true
+                        });
+                    });
+            });
+        });
+    </script>
+}
